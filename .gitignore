@@ -39,3 +39,6 @@ out/
 *.csproj
 *.filters
 *.user
+
+# IntricateEngine CMake files
+box2d.cmake

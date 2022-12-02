@@ -1,17 +1,17 @@
-project "Box2D"
-	kind "StaticLib"
-	language "C++"
-	cppdialect "C++11"
-	staticruntime "off"
+-- OUT_DIR and INT_DIR must be defined in the top-most premake file before including this file
 
-	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+project "box2d"
+	language "C++"
+
+    debugdir (OUT_DIR)
+    targetdir (OUT_DIR)
+    objdir (INT_DIR)
 
 	files
 	{
+		"include/**.h",
 		"src/**.h",
-		"src/**.cpp",
-		"include/**.h"
+		"src/**.cpp"
 	}
 
 	includedirs
@@ -20,17 +20,31 @@ project "Box2D"
 		"src"
 	}
 
-	filter "system:windows"
-		systemversion "latest"
+    filter "system:windows"
+		kind "SharedLib"
+        systemversion "latest"
+        cppdialect "C++11"
+		defines
+		{
+			"B2_SHARED",
+			"box2d_EXPORTS"
+		}
+
+    filter "system:linux"
+		kind "StaticLib"
+        systemversion "latest"
+        cppdialect "gnu++11"
+
+    filter "system:macosx"
+		kind "StaticLib"
+        systemversion "latest"
+        cppdialect "gnu++11"
 
 	filter "configurations:Debug"
 		runtime "Debug"
-		symbols "on"
+		symbols "Full"
 
 	filter "configurations:Release"
 		runtime "Release"
-		optimize "on"
-
-	filter "configurations:Dist"
-		runtime "Release"
-		optimize "on"
+		symbols "Off"
+		optimize "Full"
